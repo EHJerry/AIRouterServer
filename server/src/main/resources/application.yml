@@ -1,0 +1,29 @@
+server:
+  port: 8090
+
+llm:
+  minimax:
+    api-key: sk-api-799QOra-UAlsS1Gplz4CT8KkAfver8nH4GRdjRoPsmuDqtQkMrTQFLqdPiy40MEZ9IWIRgs0m0jv4rXMGHBoFPnzaFhsXtKL_eD9hEn5Bg3s_-yLM3F2Ffw
+    model: MiniMax-M3
+  glm:
+    api-key: your-glm-api-key
+    model: glm-4
+  openai:
+    api-key: your-openai-api-key
+    model: gpt-3.5-turbo
+  deepseek:
+    api-key: your-deepseek-api-key
+    model: deepseek-chat
+  # HTTP客户端配置
+  http:
+    connect-timeout: 10000      # 连接超时（毫秒）
+    read-timeout: 60000         # 读取超时（毫秒）
+    connection-pool-size: 20    # 连接池大小
+
+# Spring Boot Web配置
+spring:
+  application:
+    name: llm-proxy
+  servlet:
+    multipart:
+      enabled: false
