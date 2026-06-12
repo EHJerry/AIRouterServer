@@ -1,18 +1,27 @@
 server:
   port: 8090
+  ssl:
+    enabled: false
+    key-store-type: PKCS12
+    key-store: classpath:ssl/keystore.p12
+    # SSL证书密码 - 使用环境变量管理敏感信息
+    key-store-password: ${SSL_KEYSTORE_PASSWORD:password}
+    key-alias: llm-proxy
+    key-password: ${SSL_KEY_PASSWORD:password}
 
 llm:
   minimax:
+    # API密钥 - 使用环境变量管理敏感信息
     api-key: sk-api-799QOra-UAlsS1Gplz4CT8KkAfver8nH4GRdjRoPsmuDqtQkMrTQFLqdPiy40MEZ9IWIRgs0m0jv4rXMGHBoFPnzaFhsXtKL_eD9hEn5Bg3s_-yLM3F2Ffw
     model: MiniMax-M3
   glm:
-    api-key: your-glm-api-key
+    api-key: ${GLM_API_KEY:your-glm-api-key}
     model: glm-4
   openai:
-    api-key: your-openai-api-key
+    api-key: ${OPENAI_API_KEY:your-openai-api-key}
     model: gpt-3.5-turbo
   deepseek:
-    api-key: your-deepseek-api-key
+    api-key: ${DEEPSEEK_API_KEY:your-deepseek-api-key}
     model: deepseek-chat
   # HTTP客户端配置
   http:

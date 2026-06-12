@@ -2,10 +2,20 @@ package com.aitools.dto;
 
 /**
  * 聊天响应DTO
+ * 
+ * 响应格式：
+ * {
+ *   "success": true,
+ *   "message": "操作成功",
+ *   "answer": "...",
+ *   "model": "...",
+ *   "tokens": 42
+ * }
  */
 public class ChatResponse {
     
     private boolean success;
+    private String message;
     private String answer;
     private String model;
     private int tokens;
@@ -16,6 +26,7 @@ public class ChatResponse {
     public static ChatResponse success(String answer, String model, int tokens) {
         ChatResponse response = new ChatResponse();
         response.setSuccess(true);
+        response.setMessage("操作成功");
         response.setAnswer(answer);
         response.setModel(model);
         response.setTokens(tokens);
@@ -25,6 +36,7 @@ public class ChatResponse {
     public static ChatResponse error(String errorMessage) {
         ChatResponse response = new ChatResponse();
         response.setSuccess(false);
+        response.setMessage(errorMessage);
         response.setError(errorMessage);
         return response;
     }
@@ -35,6 +47,14 @@ public class ChatResponse {
     
     public void setSuccess(boolean success) {
         this.success = success;
+    }
+    
+    public String getMessage() {
+        return message;
+    }
+    
+    public void setMessage(String message) {
+        this.message = message;
     }
     
     public String getAnswer() {
