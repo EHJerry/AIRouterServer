@@ -77,7 +77,25 @@ public class MiniMaxClient extends OpenAICompatibleClient {
     protected LLMResponse parseResponse(String responseBody) throws Exception {
         JsonNode root = objectMapper.readTree(responseBody);
         String content = root.path("choices").get(0).path("message").path("content").asText();
+        
+        // 移除 MiniMax 返回的 <think> 标签及其内容
+        content = removeThinkTag(content);
+        
         int tokens = root.path("usage").path("total_tokens").asInt(0);
         return new LLMResponse(content, model, tokens);
+    }
+    
+    /**
+     * 移除响应内容中的 <think> 标签及其内容
+     * @param content 原始响应内容
+     * @return 清理后的内容
+     */
+    private String removeThinkTag(String content) {
+        if (content == null) {
+            return null;
+        }
+        // 使用正则表达式移除 <think>...</think> 标签及其内容（支持多行）
+        // [\\s\\S]*? 匹配包括换行符在内的任何字符
+        return content.replaceAll("<think>[\\s\\S]*?</think>", "").trim();
     }
 }

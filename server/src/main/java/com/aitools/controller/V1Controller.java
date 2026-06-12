@@ -6,7 +6,10 @@ import com.aitools.service.LLmService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.concurrent.CompletableFuture;
 
@@ -15,7 +18,6 @@ import java.util.concurrent.CompletableFuture;
  */
 @RestController
 @RequestMapping("/v1")
-@CrossOrigin(origins = "*")
 public class V1Controller {
     
     private static final Logger logger = LoggerFactory.getLogger(V1Controller.class);
@@ -33,13 +35,14 @@ public class V1Controller {
      * 请求示例:
      * {
      *   "modelType": "minimax",
-     *   "modelName": "MiniMax-M3",
-     *   "question": "你好，请介绍一下你自己"
+     *   "model": "MiniMax-M3",
+     *   "message": "你好，请介绍一下你自己"
      * }
      * 
      * 响应示例:
      * {
      *   "success": true,
+     *   "message": "操作成功",
      *   "answer": "我是MiniMax大模型...",
      *   "model": "MiniMax-M3",
      *   "tokens": 42
@@ -47,8 +50,11 @@ public class V1Controller {
      */
     @PostMapping("/chat")
     public CompletableFuture<ResponseEntity<ChatResponse>> chat(@RequestBody ChatRequest request) {
-        logger.info("[V1接口] 收到聊天请求 - modelType: {}, modelName: {}, question: {}", 
-                request.getModelType(), request.getModelName(), request.getQuestion());
+        String input = request.getInput();
+        String model = request.getModelIdentifier();
+        
+        logger.info("[V1接口] 收到聊天请求 - modelType: {}, model: {}, message: {}", 
+                request.getModelType(), model, input);
         
         return llmService.chatAsync(request)
                 .thenApply(response -> {

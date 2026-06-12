@@ -34,9 +34,12 @@ public class LLmService {
         long startTime = System.currentTimeMillis();
         try {
             String modelType = request.getModelType().toLowerCase();
-            String question = request.getQuestion();
+            // 使用兼容方法获取输入内容（优先使用message，兼容旧版question字段）
+            String question = request.getInput();
+            // 使用兼容方法获取模型名称（优先使用model，兼容旧版modelName字段）
+            String modelName = request.getModelIdentifier();
             
-            LLMClient client = createClient(modelType, request.getModelName());
+            LLMClient client = createClient(modelType, modelName);
             List<com.aitools.llm.Message> messages = new java.util.ArrayList<>();
             messages.add(new com.aitools.llm.Message("user", question));
             LLMResponse response = client.chat(messages);
